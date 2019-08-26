@@ -14,8 +14,8 @@ To add my bot please follow this link: https://discordapp.com/oauth2/authorize?c
 8) !roll
 
 # League of Legends Rank
-!rankeune
-!rankeuw
-!rankkr
-!rankna
-!rankoce
+  !rankeune
+  !rankeuw
+  !rankkr
+  !rankna
+  !rankoce
