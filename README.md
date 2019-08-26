@@ -19,3 +19,5 @@ To add my bot please follow this link: https://discordapp.com/oauth2/authorize?c
   !rankkr
   !rankna
   !rankoce
+
+# I hope you enjoy the bot!
