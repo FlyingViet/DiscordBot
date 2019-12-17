@@ -1,7 +1,7 @@
 # DiscordBot
 My all-in-one discord bot that has commands for all my needs.
 
-To add my bot please follow this link: https://discordapp.com/oauth2/authorize?client_id=599401316107943946&permissions=2146958839&scope=bot
+To add my bot please follow this link: http://bit.ly/35wHlCz
 
 # List of Commands
 1) !clear
