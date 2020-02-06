@@ -1,7 +1,8 @@
 module.exports = {
     name: 'pinthis',
     description: 'Pins the current message',
-    cooldown: 5,
+    aliases: ['p'],
+    cooldown: 1,
     execute(message, args, con) {
         if(!message.channel.permissionsFor(message.member).has('MANAGE_MESSAGES', false, false)) return;
         message.channel.fetchMessages({limit: 2}).then(result => {

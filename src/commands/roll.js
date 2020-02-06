@@ -15,13 +15,14 @@ module.exports = {
         try{
             var dice = parseInt(args[0]);
             var times = args[1] != null ? parseInt(args[1]) : 1;
+            if(times > 10) times = 10;
         }catch(exception){
             return message.channel.send('That is not a number try again');
         }
         
         var dices = [4, 6, 8, 10, 12, 20];
         if(!dices.includes(dice)){
-            return message.channel.send('This dice does not exist try again');
+            return message.channel.send('This dice does not exist try again. Usage is (prefix)roll <Dice Size ex. 2,4,6,8,12,20> <amount of times>');
         }
         var rtnMessage = `${message.author} rolled a \n`;
         for(var i = 0; i < times; i++){

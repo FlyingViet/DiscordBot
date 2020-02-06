@@ -1,7 +1,7 @@
 module.exports = {
     name: 'pin',
-    description: 'Pins the last message',
-    cooldown: 5,
+    description: 'Pins the latest message',
+    cooldown: 1,
     execute(message, args, con) {
         if(!message.channel.permissionsFor(message.member).has('MANAGE_MESSAGES', false, false)) return;
         message.channel.fetchMessages({limit: 2}).then(result => {
