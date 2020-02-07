@@ -19,5 +19,8 @@ To add my bot please follow this link: http://bit.ly/35wHlCz
 3) !rankkr
 4) !rankna
 5) !rankoce
+6) !rankbr
+7) !ranklan
+8) !live
 
 # I hope you enjoy the bot!
