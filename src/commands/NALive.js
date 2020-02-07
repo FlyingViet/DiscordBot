@@ -60,16 +60,25 @@ module.exports = {
                                 count++;
                                 var sName = player.summonerName.replace('%20', ' ');
                                 var lp = '', winrate = '';
-                                if(!n[0]) {
+                                var info = n[0];
+                                if(n.length > 1){
+                                    for(var i = 0; i < n.length; i++){
+                                        if(n[i].queueType !== 'RANKED_SOLO_5x5'){
+                                            continue;
+                                        }
+                                        info = n[i];                                        
+                                    }
+                                }
+                                if(!info) {
                                     rank = 'UNRANKED';
                                     lp = '00';
                                     winrate = '00%';
-                                }else if(n[0].queueType === 'RANKED_SOLO_5x5'){
-                                    rank = n[0].tier + ' ' + n[0].rank;
-                                    lp = n[0].leaguePoints;
+                                }else if(info.queueType === 'RANKED_SOLO_5x5'){
+                                    rank = info.tier + ' ' + info.rank;
+                                    lp = info.leaguePoints;
                                     var summoner = _.find(playOb, {'name': sName });
                                     summoner.rank = rank;
-                                    winrate = `${(n[0].wins / (n[0].wins + n[0].losses) * 100).toFixed(0)}%`;
+                                    winrate = `${(info.wins / (info.wins + info.losses) * 100).toFixed(0)}%`;
                                 }
                                 if(rank.length === 0){
                                     rank = 'UNRANKED';
