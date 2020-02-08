@@ -14,7 +14,7 @@ To add my bot please follow this link: http://bit.ly/35wHlCz
 8) !roll
 
 # League of Legends Rank
-![rank command](https://github.com/FlyingViet/DiscordBot/blob/master/src/Images/rank.PNG)
+![rank command](https://github.com/FlyingViet/DiscordBot/blob/master/src/Images/rank.PNG)  <br />
 1) !rankeune
 2) !rankeuw
 3) !rankkr
@@ -24,9 +24,8 @@ To add my bot please follow this link: http://bit.ly/35wHlCz
 7) !ranklan
 8) !rankeune
 9) !rankeuw
----------------
 # Get current match information
-![live command](https://github.com/FlyingViet/DiscordBot/blob/master/src/Images/live.PNG)
+![live command](https://github.com/FlyingViet/DiscordBot/blob/master/src/Images/live.PNG)  <br />
 10) !livekr
 11) !livena
 12) !liveoce
