@@ -33,7 +33,7 @@ module.exports = {
                 eb.setThumbnail(`http://ddragon.leagueoflegends.com/cdn/10.3.1/img/profileicon/${data.profileIconId}.png`);
                 eb.setTitle(name);
                 eb.setColor(0x0099ff);
-                eb.setURL('https://.op.gg/summoner/userName=' + summonerNam);
+                eb.setURL('https://euw.op.gg/summoner/userName=' + summonerNam);
                 r.forEach(m => {
                     eb.addField('\nQueue Type', m.queueType);
                     eb.addField('Rank', m.tier + ' ' + m.rank, true);
