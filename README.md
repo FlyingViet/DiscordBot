@@ -21,6 +21,14 @@ To add my bot please follow this link: http://bit.ly/35wHlCz
 5) !rankoce
 6) !rankbr
 7) !ranklan
-8) !live
+8) !rankeune
+9) !rankeuw
+---------------
+# Get current match information
+10) !livekr
+11) !livena
+12) !liveoce
+13) !livebr
+14) !livelan
 
 # I hope you enjoy the bot!
