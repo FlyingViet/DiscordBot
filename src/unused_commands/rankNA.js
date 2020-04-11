@@ -3,9 +3,9 @@ const fetch = require('node-fetch');
 const Discord = require('discord.js');
 
 module.exports = {
-    name: 'rankeuw',
+    name: 'rankna',
     description: 'Displays ranked information for summoner',
-    aliases: ['euw'],
+    aliases: ['ranked', 'na'],
     cooldown: 5,
     execute(message, args, con) {
         var summonerNam = '';
@@ -16,13 +16,13 @@ module.exports = {
             summonerNam += a + '%20';
         });
         summonerNam = summonerNam.slice(0, -3);
-        fetch('https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/' + summonerNam.trim() + `?api_key=${key}`, {
+        fetch('https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/' + summonerNam.trim() + `?api_key=${key}`, {
             method: 'get',
         }).then(function(response){
             return response.json();
         }).then(function(data){
             var summonerId = data.id;
-            return fetch('https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/' + summonerId + `?api_key=${key}`, {method: 'get'}).then(function(response){
+            return fetch('https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/' + summonerId + `?api_key=${key}`, {method: 'get'}).then(function(response){
                 return response.json();
             }).then(function(r){
                 const eb = new Discord.RichEmbed();
@@ -33,13 +33,12 @@ module.exports = {
                 eb.setThumbnail(`http://ddragon.leagueoflegends.com/cdn/10.3.1/img/profileicon/${data.profileIconId}.png`);
                 eb.setTitle(name);
                 eb.setColor(0x0099ff);
-                eb.setURL('https://euw.op.gg/summoner/userName=' + summonerNam);
+                eb.setURL('https://na.op.gg/summoner/userName=' + summonerNam);
                 r.forEach(m => {
                     eb.addField('\nQueue Type', m.queueType);
                     eb.addField('Rank', m.tier + ' ' + m.rank, true);
-                    eb.addField('Points', m.leaguePoints + '/100', true);
+                    eb.addField('Points', m.leaguePoints, true);
                     eb.addField('Wins/Losses', m.wins + '/' + m.losses, true);
-                    
                 });
                 message.channel.send({embed: eb});
                 return r;

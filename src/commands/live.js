@@ -7,37 +7,53 @@ const async = require('async');
 
 
 module.exports = {
-    name: 'liveEUW',
+    name: 'live',
     description: 'Displays ranked information for summoner',
-    aliases: ['liveEUW'],
+    aliases: ['live'],
     cooldown: 5,
     execute(message, args, con) {
+        var regions = [
+            {region: 'na', api: 'na1', op: 'https://na.op.gg/summoner/userName='},
+            {region: 'kr', api: 'kr', op: 'https://op.gg/summoner/userName='},
+            {region: 'oce', api: 'oc1', op: 'https://oce.op.gg/summoner/userName='},
+            {region: 'euw', api: 'euw1', op: 'https://euw.op.gg/summoner/userName='},
+            {region: 'eune', api: 'eun1', op: 'https://eune.op.gg/summoner/userName='},
+            {region: 'br', api: 'br1', op: 'https://br.op.gg/summoner/userName='},
+        ];
         var summonerNam = '';
         var blue = '', red = '';
         const eb = new Discord.RichEmbed();
         const playOb = [];
-        
+        var region = {};
         if(!args.length){
             return;
         }
-        args.forEach(a => {
-            summonerNam += a + '%20';
-        });
+        else if(!regions.some(x => x.region === args[0])){
+            args.forEach(a => {
+                summonerNam += a + '%20';
+            });
+            region = regions[0];
+        }else{
+            for(var j = 1; j < args.length; j++){
+                summonerNam += args[j] + '%20';
+            }
+            region = regions.find(reg => reg.region === args[0]);
+        }
         summonerNam = summonerNam.slice(0, -3);
-        fetch('https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/' + summonerNam.trim() + `?api_key=${key}`, {
+        fetch(`https://${region.api}.api.riotgames.com/lol/summoner/v4/summoners/by-name/` + summonerNam.trim() + `?api_key=${key}`, {
             method: 'get',
         }).then(function(response){
             return response.json();
         }).then(function(data){
             var summonerId = data.id;
-            return fetch('https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/' + summonerId + `?api_key=${key}`, {method: 'get'}).then(function(response){
+            return fetch(`https://${region.api}.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/` + summonerId + `?api_key=${key}`, {method: 'get'}).then(function(response){
                 return response.json();
             }).then(async function(r){
                 var name = summonerNam.replace('%20', ' ');
                 eb.setThumbnail(`http://ddragon.leagueoflegends.com/cdn/10.3.1/img/profileicon/${data.profileIconId}.png`);
                 eb.setTitle(name);
                 eb.setColor(0x0099ff);
-                eb.setURL('https://euw.op.gg/summoner/userName=' + summonerNam);
+                eb.setURL(region.op + summonerNam);
                 if(r.status){
                     eb.setDescription(name + ' currently not in game');
                     message.channel.send({embed: eb});
@@ -54,7 +70,7 @@ module.exports = {
                         async.each(r.participants, async function(player){    
                             var rank = '';      
                             var champ = emotes[player.championId];
-                            fetch('https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/' + player.summonerId + `?api_key=${key}`, {method: 'get'}).then(function(response){
+                            fetch(`https://${region.api}.api.riotgames.com/lol/league/v4/entries/by-summoner/` + player.summonerId + `?api_key=${key}`, {method: 'get'}).then(function(response){
                                 return response.json();
                             }).then(function(n){
                                 count++;
@@ -83,6 +99,8 @@ module.exports = {
                                 }
                                 if(rank.length === 0){
                                     rank = 'UNRANKED';
+                                    lp = '00';
+                                    winrate = '00%';
                                 }
                                 if(player.teamId === 100){
                                     blue = blue + champ + '    ' + `**${sName}**` + '\n' + `${rank}` + ` -- ${lp}lp` + ` -- W/R: ${winrate}` + '\n';  

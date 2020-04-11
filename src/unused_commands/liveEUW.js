@@ -7,9 +7,9 @@ const async = require('async');
 
 
 module.exports = {
-    name: 'nalive',
+    name: 'liveEUW',
     description: 'Displays ranked information for summoner',
-    aliases: ['live', 'livena'],
+    aliases: ['liveEUW'],
     cooldown: 5,
     execute(message, args, con) {
         var summonerNam = '';
@@ -24,20 +24,20 @@ module.exports = {
             summonerNam += a + '%20';
         });
         summonerNam = summonerNam.slice(0, -3);
-        fetch('https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/' + summonerNam.trim() + `?api_key=${key}`, {
+        fetch('https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/' + summonerNam.trim() + `?api_key=${key}`, {
             method: 'get',
         }).then(function(response){
             return response.json();
         }).then(function(data){
             var summonerId = data.id;
-            return fetch('https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/' + summonerId + `?api_key=${key}`, {method: 'get'}).then(function(response){
+            return fetch('https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/' + summonerId + `?api_key=${key}`, {method: 'get'}).then(function(response){
                 return response.json();
             }).then(async function(r){
                 var name = summonerNam.replace('%20', ' ');
                 eb.setThumbnail(`http://ddragon.leagueoflegends.com/cdn/10.3.1/img/profileicon/${data.profileIconId}.png`);
                 eb.setTitle(name);
                 eb.setColor(0x0099ff);
-                eb.setURL('https://na.op.gg/summoner/userName=' + summonerNam);
+                eb.setURL('https://euw.op.gg/summoner/userName=' + summonerNam);
                 if(r.status){
                     eb.setDescription(name + ' currently not in game');
                     message.channel.send({embed: eb});
@@ -54,7 +54,7 @@ module.exports = {
                         async.each(r.participants, async function(player){    
                             var rank = '';      
                             var champ = emotes[player.championId];
-                            fetch('https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/' + player.summonerId + `?api_key=${key}`, {method: 'get'}).then(function(response){
+                            fetch('https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/' + player.summonerId + `?api_key=${key}`, {method: 'get'}).then(function(response){
                                 return response.json();
                             }).then(function(n){
                                 count++;
@@ -69,7 +69,8 @@ module.exports = {
                                         info = n[i];                                        
                                     }
                                 }
-                                if(!info) {
+
+                                if(info === undefined) {
                                     rank = 'UNRANKED';
                                     lp = '00';
                                     winrate = '00%';
@@ -82,6 +83,8 @@ module.exports = {
                                 }
                                 if(rank.length === 0){
                                     rank = 'UNRANKED';
+                                    lp = '00';
+                                    winrate = '00%';
                                 }
                                 if(player.teamId === 100){
                                     blue = blue + champ + '    ' + `**${sName}**` + '\n' + `${rank}` + ` -- ${lp}lp` + ` -- W/R: ${winrate}` + '\n';  

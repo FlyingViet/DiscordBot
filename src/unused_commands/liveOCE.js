@@ -83,6 +83,8 @@ module.exports = {
                                 }
                                 if(rank.length === 0){
                                     rank = 'UNRANKED';
+                                    lp = '00';
+                                    winrate = '00%';
                                 }
                                 if(player.teamId === 100){
                                     blue = blue + champ + '    ' + `**${sName}**` + '\n' + `${rank}` + ` -- ${lp}lp` + ` -- W/R: ${winrate}` + '\n';  
