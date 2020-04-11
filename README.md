@@ -15,21 +15,11 @@ To add my bot please follow this link: http://bit.ly/35wHlCz
 
 # League of Legends Rank
 ![rank command](https://github.com/FlyingViet/DiscordBot/blob/master/src/Images/rank.PNG)  <br />
-1) !rankeune <br />
-2) !rankeuw  <br />
-3) !rankkr  <br />
-4) !rankna <br />
-5) !rankoce <br />
-6) !rankbr <br />
-7) !ranklan <br />
-8) !rankeune <br />
-9) !rankeuw <br />
+Available regions are na, kr, oce, euw, eune, br
+!rank \[region] \[username]
 # Get current match information
 ![live command](https://github.com/FlyingViet/DiscordBot/blob/master/src/Images/live.PNG)  <br />
-10) !livekr <br />
-11) !livena <br />
-12) !liveoce <br />
-13) !livebr <br />
-14) !livelan <br />
+Available regions are na, kr, oce, euw, eune, br
+!live \[region] \[username]
 
 # I hope you enjoy the bot!
