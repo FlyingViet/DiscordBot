@@ -32,14 +32,15 @@ client.on('ready', () => {
     setTimeout(function() {
         process.exit(0);
     }, 1000 * 60 * 30);
+    const time = new Date(Date.now());
 	client.user.setPresence({ status: 'online', game: { name: `DelariousBot ~ Type  ${prefix}help for commands` } });
-	console.log(`Logged in as ${client.user.tag}!\n`);
+	console.log(`${time.toUTCString()}: Logged in as ${client.user.tag}!\r\n`);
 });
 
 client.on('error', console.error);
 client.on('disconnect', (e) => {
 	client.destroy().then(() => client.login());
-	console.log(`${e.code}: ${e.reason}\n`);
+	console.log(`${e.code}: ${e.reason}\r\n`);
 });
 
 
@@ -66,15 +67,17 @@ client.on('message', message => {
         var item = guildPrefixes.find(guilds => guilds.guildName === message.guild.id);
         prefix = item.prefix;
     }else{
-        if(message.channel.type == 'dm') return;
-        insertGuildInfo(message, args);
-        updateNames(message);
+        prefix = '!';
     }
 
     if(!message.content.startsWith(prefix) || message.author.bot) return;
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
+    if(!guildPrefixes.some(e => e.guildName === message.guild.id)){
+        insertGuildInfo(message, args);
+        updateNames(message);
+    }
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
     if (!command) {
@@ -85,7 +88,7 @@ client.on('message', message => {
         let reply = `You didn't provide any arguments, ${message.author}!`;
 
         if(command.usage){
-            reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}`;
+            reply += `\r\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}`;
         }
 
         return message.channel.send(reply);
@@ -112,10 +115,13 @@ client.on('message', message => {
     setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
     try{
+        const time = new Date(Date.now());
+        console.log(`${time}: ${message.author.username} ran the command: ${commandName}\r\n`);
         command.execute(message, args, con);
         getData();
     }catch(error){
-        console.error(error);
+        const time = new Date(Date.now());
+        console.log(`${time}: Command threw an error: \r\n${error}` );
     
     }
 });
@@ -126,11 +132,11 @@ async function getData(){
     con.getConnection(function(err, connection){
         var sql = 'SELECT * FROM discordbot.GuildInfo';
         if(err){
-            return console.log(err + '\n');
+            return console.log(err + '\r\n');
         }
         connection.query(sql, function(err, result){
             if(err){
-                return console.log('Unable to load database\n');
+                return console.log('Unable to load database\r\n');
             }
             guildPrefixes = [];
             result.forEach((guildName, prefix1) => {
@@ -145,10 +151,10 @@ function updateNames(message){
     con.getConnection(function(err, connection){
         connection.query(`UPDATE discordbot.GuildInfo SET ChannelName = '${message.guild.name}' WHERE GuildName = '${message.guild.id}'`, function(err2, result2){
             if(err2){
-                console.log('It failed to Update' + err2);
+                console.log('\r\nIt failed to Update' + err2);
                 return;
             }else{
-                console.log('Your channel name is set');
+                console.log('\r\nYour channel name is set');
                 return;
             }
         });
@@ -158,11 +164,11 @@ function updateNames(message){
 
 function insertGuildInfo(message, args){
     con.getConnection(function(err, connection){
-        connection.query(`INSERT INTO discordbot.GuildInfo VALUES('${message.guild.id}', '${args[0]}')`, function(err1, result2){
+        connection.query(`INSERT INTO discordbot.GuildInfo VALUES('${message.guild.id}', '!', '${message.guild.name}')`, function(err1, result2){
             if(err1){
-                return console.log('It failed to Insert' + err1 + '\n');
+                return console.log('It failed to Insert' + err1 + '\r\n');
             }else{
-                return console.log('Inserted Successfully\n');
+                return console.log('\r\nInserted Successfully\n');
             }
         });
         connection.release();
